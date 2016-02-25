@@ -26,11 +26,12 @@ func main() {
 	r.HandleFunc("/products/{id:[0-9]+}", hd.ProductsIdHandler)
 	r.HandleFunc("/articles", hd.ArticlesHandler)
 
-	loggedRouter := handlers.LoggingHandler(os.Stdout, r)
+	loggedRouter := handlers.CombinedLoggingHandler(os.Stdout, r)
+	compressedAndLogged := handlers.CompressHandler(loggedRouter)
 
 	server := http.Server{
 		Addr:         fmt.Sprintf(":%d", port),
-		Handler:      loggedRouter,
+		Handler:      compressedAndLogged,
 		ReadTimeout:  time.Minute * timeout,
 		WriteTimeout: time.Minute * timeout,
 	}
