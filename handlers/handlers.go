@@ -1,8 +1,11 @@
-package mux_trial
+package handlers
 
 import (
 	"io"
+	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
