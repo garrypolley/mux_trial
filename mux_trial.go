@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
-	"github.com/garrypolley/mux_trial/handlers"
+	hd "github.com/garrypolley/mux_trial/handlers"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -16,21 +18,19 @@ const (
 	timeout = 5
 )
 
-func handleFunc(r *mux.Router, url string, handler func(http.ResponseWriter, *http.Request)) {
-	r.HandleFunc(url, handlers.LogRequest(handler))
-}
-
 func main() {
 	r := mux.NewRouter().StrictSlash(true)
 
-	handleFunc(r, "/", handlers.HomeHandler)
-	handleFunc(r, "/products", handlers.ProductsHandler)
-	handleFunc(r, "/products/{id:[0-9]+}", handlers.ProductsIdHandler)
-	handleFunc(r, "/articles", handlers.ArticlesHandler)
+	r.HandleFunc("/", hd.HomeHandler)
+	r.HandleFunc("/products", hd.ProductsHandler)
+	r.HandleFunc("/products/{id:[0-9]+}", hd.ProductsIdHandler)
+	r.HandleFunc("/articles", hd.ArticlesHandler)
+
+	loggedRouter := handlers.LoggingHandler(os.Stdout, r)
 
 	server := http.Server{
 		Addr:         fmt.Sprintf(":%d", port),
-		Handler:      r,
+		Handler:      loggedRouter,
 		ReadTimeout:  time.Minute * timeout,
 		WriteTimeout: time.Minute * timeout,
 	}
