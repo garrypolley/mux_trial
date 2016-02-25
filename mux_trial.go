@@ -2,14 +2,13 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"net/http"
-	"os"
-	"time"
 
-	hd "github.com/garrypolley/mux_trial/handlers"
+	"github.com/garrypolley/mux_trial/handlers"
+	"github.com/garrypolley/mux_trial/logging"
+	"github.com/garrypolley/mux_trial/middleware"
 
-	"github.com/gorilla/handlers"
+	"github.com/Sirupsen/logrus"
+	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
 )
 
@@ -18,24 +17,22 @@ const (
 	timeout = 5
 )
 
+var log *logrus.Logger
+
+func init() {
+	log = logging.Logger
+}
 func main() {
 	r := mux.NewRouter().StrictSlash(true)
 
-	r.HandleFunc("/", hd.HomeHandler)
-	r.HandleFunc("/products", hd.ProductsHandler)
-	r.HandleFunc("/products/{id:[0-9]+}", hd.ProductsIdHandler)
-	r.HandleFunc("/articles", hd.ArticlesHandler)
+	r.HandleFunc("/", handlers.HomeIndex)
+	r.HandleFunc("/products", handlers.ProductIndex)
+	r.HandleFunc("/products/{id:[0-9]+}", handlers.ProductById)
 
-	loggedRouter := handlers.CombinedLoggingHandler(os.Stdout, r)
-	compressedAndLogged := handlers.CompressHandler(loggedRouter)
+	server := negroni.New()
 
-	server := http.Server{
-		Addr:         fmt.Sprintf(":%d", port),
-		Handler:      compressedAndLogged,
-		ReadTimeout:  time.Minute * timeout,
-		WriteTimeout: time.Minute * timeout,
-	}
+	server.UseHandler(r)
+	server.Use(middleware.NewLoggingMiddleware())
 
-	log.Printf("Starting server on :%d with a timeout of %d minutes", port, timeout)
-	server.ListenAndServe()
+	server.Run(fmt.Sprintf(":%d", port))
 }

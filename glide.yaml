@@ -2,3 +2,6 @@ package: github.com/garrypolley/mux_trial
 import:
 - package: github.com/gorilla/mux
 - package: github.com/gorilla/handlers
+- package: github.com/codegangsta/negroni
+- package: github.com/evalphobia/logrus_sentry
+- package: github.com/unrolled/render

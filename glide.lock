@@ -1,10 +1,24 @@
-hash: 36ba5425cc1accd70a7b008aaea917c7fda860b2d3e829a16f97e22e176d37e1
-updated: 2016-02-24T23:09:30.675010968-06:00
+hash: 5539b14ec73a59e89d9ebce58eb5da37eadceeda9ff126bc56ade263ecdadd7c
+updated: 2016-02-25T13:11:19.865859738-06:00
 imports:
+- name: github.com/codegangsta/negroni
+  version: c7477ad8e330bef55bf1ebe300cf8aa67c492d1b
+- name: github.com/evalphobia/logrus_sentry
+  version: d265708c9c877d2f458e673f0af437a0529baee9
+- name: github.com/getsentry/raven-go
+  version: 1cc47a9463b90f246a0503d4c2e9a55c9459ced3
 - name: github.com/gorilla/context
   version: 1c83b3eabd45b6d76072b66b746c20815fb2872d
 - name: github.com/gorilla/handlers
   version: b3aff83722cb2ae031a70cae984650e3a16cd20e
 - name: github.com/gorilla/mux
   version: 26a6070f849969ba72b72256e9f14cf519751690
+- name: github.com/Sirupsen/logrus
+  version: 219c8cb75c258c552e999735be6df753ffc7afdc
+- name: github.com/unrolled/render
+  version: 198ad4d8b8a4612176b804ca10555b222a086b40
+- name: gopkg.in/airbrake/gobrake.v2
+  version: c9d51adc624b5cc4c1bf8de730a09af4878ffe2d
+- name: gopkg.in/gemnasium/logrus-airbrake-hook.v2
+  version: 31e6fd4bd5a98d8ee7673d24bc54ec73c31810dd
 devImports: []
